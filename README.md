@@ -1,10 +1,10 @@
 # 钉钉消息群发
 
-## Main Features
+## 主要特色
 - 利用函数计算，一键部署钉钉机器人群发私服，解放双手
 - 通过鉴权认证，避免私服泄漏
 
-## Usage
+## 使用方法
 1. 开通 [阿里云函数计算服务](https://cn.aliyun.com/product/fc?spm=5176.10695662.1112509.1.572e4357qoGwrS)
 
 2. git clone https://github.com/awesome-fc/dingtalk-broadcast.git
