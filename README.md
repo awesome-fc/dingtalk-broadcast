@@ -33,11 +33,11 @@
    https://oapi.dingtalk.com/robot/send?access_token=456789
    ```
 
-4. 执行项目目录下的 __deploy.sh__ 文件，命令行将会输出 `endpoint` 与 `token`，同时会打开浏览器并跳转到 __钉钉消息群发__，`endpoint` 与 `token` 默认会填写，此时只需要填写要群发的 __消息__，点击发送即可
+4. 执行项目目录下的 __deploy.sh__ 文件，命令行将会输出 `endpoint` 与 `token`，同时会打开浏览器并跳转到 [钉钉消息群发](https://awesome-fc.github.io/dingtalk-broadcast/) ，`endpoint` 与 `token` 默认会填写，此时只需要填写要群发的 __消息__，点击发送即可
    ![](./picture/deploy.png)
 
    ![](./picture/dingtalkbroadcast.png)
 
-5. 此后要发送消息，只需要执行项目目录下的 __start.sh__ 文件，或直接浏览 __钉钉消息群发__ 并填写 `endpoint` 、 `token` 与要发送的消息即可
+5. 此后要发送消息，只需要执行项目目录下的 __start.sh__ 文件，或直接浏览 [钉钉消息群发](https://awesome-fc.github.io/dingtalk-broadcast/) 并填写 `endpoint` 、 `token` 与要发送的消息即可
 
 6. 如果要修改机器人信息，可以在 __urls.txt__ 文件中修改机器人信息，并重新执行 __deploy.sh__
