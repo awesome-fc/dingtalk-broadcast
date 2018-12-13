@@ -1,0 +1,6 @@
+# 钉钉群1
+https://oapi.dingtalk.com/robot/send?access_token=xxxxx
+
+# 钉钉群2
+https://oapi.dingtalk.com/robot/send?access_token=xxxxx
+   
