@@ -1,4 +1,4 @@
-# dingtalk-broadcast
+# 钉钉消息群发
 
 ## Main Features
 - 利用函数计算，一键部署钉钉机器人群发私服，解放双手
