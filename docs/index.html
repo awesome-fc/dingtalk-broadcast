@@ -1,0 +1,117 @@
+<html>
+
+<head>
+    <title>钉钉机器人消息转发台</title>
+    <link href="./css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous">
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+        <a class="navbar-brand" href="#"><i class="fas fa-bullhorn"></i> &nbsp; 钉钉消息群发</a>
+    </nav>
+    <main role="main" class="container">
+        <div class="jumbotron">
+            <div class="form-group">
+                <label for="endpoint" class="col-sm-2 control-label"><i class="fas fa-door-open"></i>&nbsp;<span class="font-weight-bold">Endpoint</span></label>
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" id="endpoint" placeholder="请输入 endpoint">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="token" class="col-sm-2 control-label"><i class="fas fa-lock"></i>&nbsp;<span class="font-weight-bold">Token</span></label>
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" id="token" placeholder="请输入 token">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="message" class="col-sm-2 control-label"><i class="fas fa-envelope"></i>&nbsp;<span class="font-weight-bold">Message</span></label>
+                <div class="col-sm-12">
+                    <textarea id="message" class="form-control" rows="10" cols="100"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-12" style="text-align:right;">
+                    <button class="btn btn-default" onclick="sendMessage()"><i class="fas fa-share"></i>&nbsp;<span
+                            class="font-weight-bold">发送</span></button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">Powered by fc</span>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">提示：</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="modalContent" class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        var args = getString()
+        $('#endpoint').val(args['endpoint'])
+        $('#token').val(args['token'])
+    })
+
+    function sendMessage() {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                $("#modalContent").html(httpRequest.responseText)
+                $("#exampleModal").modal()
+            }
+        };
+        var endpoint = document.getElementById("endpoint").value
+        var token = document.getElementById("token").value
+        var message = document.getElementById("message").value
+        httpRequest.open('POST', endpoint + '?token=' + token + '&message=' + message);
+        httpRequest.send();
+    }
+
+    function getString() {
+        //取得查询字符串并去掉开头的问号
+        var str = (location.search.length > 0 ? location.search.substring(1) : "");
+        var args = {}; //保存数据的对象
+        items = str.length ? str.split('&') : []; //取得每一项
+        var item = null;
+        var name = null;
+        var value = null;
+        for (var i = 0; i < items.length; i++) {
+            item = items[i].split('=');
+            name = decodeURIComponent(item[0]);
+            value = decodeURIComponent(item[1]);
+            if (name.length) {
+                args[name] = value;
+            }
+        }
+        return args;
+    }
+</script>
+
+</html>
