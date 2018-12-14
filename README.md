@@ -14,7 +14,7 @@
    webhook地址：
    - 点击 __钉钉桌面版__ 右上角的个人名片，选择 __机器人管理__ 
      
-     ![](./picture/dingtalk-webhook-1.png)
+      <img src="./picture/dingtalk-webhook-1.png" width="300px" height="150px" />
 
    - 在机器人管理页面中，可以选择新增自定义机器人，也可以在已添加的自定义机器人列表中，点击 `...` 按钮，获取 webhook 地址
       
