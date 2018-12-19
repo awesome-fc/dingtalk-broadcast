@@ -4,7 +4,7 @@ set -e
 
 endpoint=$(cat ~/.fcli/config.yaml | grep 'endpoint' | awk -F ': ' '{print $2}' | sed '2d')
 api_version=$(cat ~/.fcli/config.yaml | grep 'api_version' | awk -F '"' '{print $2}')
-service_name="dingRobot"-$(date +%s | base64 | sed 's/=/a/g' | sed 's/&/b/g' |head -c 6 )
+service_name="dingRobot"-$(date +%s | base64 | sed 's/=/a/g' | sed 's/&/b/g' |head -c 8 )
 token=$(date +%s |base64 | sed 's/=/a/g' | sed 's/&/b/g')
 urls=($(cat ./urls.txt | grep 'https' | grep -v '#'))
 url=""
@@ -21,10 +21,33 @@ for i in ${!urls[@]};
 done
 
 sendMessage="var request = require('request');
-
+var getRawBody = require('raw-body');
+var getFormBody = require('body/form');
+var body = require('body');
 var urls=[
    $url
 ];
+
+var textMsg = {
+  \"msgtype\": \"text\",
+  \"text\": {
+      \"content\": \"\"
+  },
+  \"at\":{
+    \"isAtAll\": false
+  }
+}
+
+var markdownMsg = {
+    \"msgtype\": \"markdown\",
+    \"markdown\": {
+      \"title\":\"函数计算\",
+      \"text\":\"\"     
+    },
+    \"at\": {
+      \"isAtAll\": false
+    }
+ }
 
 module.exports.handler = function(req, resp, context) { 
     var token = \"${token}\"
@@ -32,34 +55,39 @@ module.exports.handler = function(req, resp, context) {
         message : \"token 错误\"
     }
     var size = urls.length
-    if (req.queries.token !== token) {
-        resp.send(JSON.stringify(error, null, '    '));
-    } else {
-        if (size <= 0) {
-          resp.send(\"urls 列表为空\");
-        }
-        urls.forEach(url => {
-            request({
-                url: url,
-                method: \"POST\",
-                json: true,
-                headers: {
-                    \"content-type\": \"application/json\",
-                },
-                body: {
-                    \"msgtype\": \"text\",
-                    \"text\": {
-                        \"content\": req.queries.message
+    getRawBody(req, function(err, body) {
+        var str = body.toString()
+        console.log(body.toString())
+        if (req.queries.token !== token) {
+            resp.send(JSON.stringify(error, null, '    '));
+        } else {
+            console.log(req.queries.isAtAll)
+            if (req.queries.isAtAll === \"true\") {
+              textMsg.at.isAtAll = true
+              markdownMsg.at.isAtAll = true
+            }
+            console.log(textMsg.at.isAtAll)
+            var type = req.queries.type
+            textMsg.text.content = str
+            markdownMsg.markdown.text = str
+            urls.forEach(url => {
+                request({
+                    url: url,
+                    method: \"POST\",
+                    json: true,
+                    headers: {
+                        \"content-type\": \"application/json\",
+                    },
+                    body: type == 'markdown' ? markdownMsg : textMsg
+                }, function(error, response, body) {
+                    if(--size <= 0) {
+                        resp.send(str);
                     }
-                }
-            }, function(error, response, body) {
-                if(--size <= 0) {
-                    resp.send(req.queries.message);
-                }
-            });
-        });
+                });
+            });            
+        }
         
-    }
+    }); 
 };
 "
 
@@ -93,6 +121,7 @@ echo "$template" > ./function/template.yml
 
 cd function
 npm add request
+npm add raw-body
 
 fun deploy > deploy.log
 
