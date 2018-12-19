@@ -62,6 +62,5 @@ typings/
 
 function/
 package-lock.json
-start.sh
 
 .DS_Store
