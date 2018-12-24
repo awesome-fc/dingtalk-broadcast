@@ -5,7 +5,7 @@
 - 通过鉴权认证，避免私服泄漏
 
 ## 使用方法
-1. 开通 [阿里云函数计算服务](https://cn.aliyun.com/product/fc?spm=5176.10695662.1112509.1.572e4357qoGwrS)
+1. 开通 [阿里云函数计算服务](https://cn.aliyun.com/product/fc?spm=5176.10695662.1112509.1.572e4357qoGwrS) 并安装配置 [函数计算工具 fcli](https://help.aliyun.com/document_detail/52995.html?spm=5176.10695662.1996646101.searchclickresult.308f1710MBehQD)
 
 2. git clone https://github.com/awesome-fc/dingtalk-broadcast.git
 
@@ -37,6 +37,8 @@
    ![](./picture/deploy.png)
 
    ![](./picture/dingtalkbroadcast.png)
+
+   可以选择自己要发送的格式，选择 @所有人 即可 @所有人
 
 5. 此后要发送消息，只需要执行项目目录下的 __start.sh__ 文件，或直接浏览 [钉钉消息群发](https://awesome-fc.github.io/dingtalk-broadcast/) 并填写 `endpoint` 、 `token` 与要发送的消息即可
 
